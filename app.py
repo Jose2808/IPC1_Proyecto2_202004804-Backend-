@@ -311,12 +311,28 @@ def obtenerMisCitas(username):
     Datos = []
     for cita in citas:
         if cita.getDoctor() == username:
-            objeto = {'id': cita.getId(), 'user':  cita.getPatientUser() , 'date': cita.getDate(), 'hour': cita.getHour(), 'motive': cita.getMotive()}
+            objeto = {'id': cita.getId(), 'user':  cita.getPatientUser() , 'date': cita.getDate(), 'hour': cita.getHour(), 'motive': cita.getMotive(), 'state': cita.getState()}
             Datos.append(objeto)
         else:
             objeto = {'Mensaje':'Usted no tiene citas asignadas'}
     return(jsonify(Datos))
-            
+
+@app.route('/cita/completar', methods = ['POST'])
+def completarCita():
+    idCita = request.json['idCita']
+    userDoctor = request.json['user']
+    for cita in citas:
+        if cita.getId() == int(idCita):
+            cita_exist = True
+            cita.setState("Completada")
+            objeto = {'Mensaje': 'La cita ha sido completada', 'idCita': cita.getId()}
+            break
+        else:
+            cita_exist = False
+        if cita_exist == False:
+            objeto = {'Mensaje': 'No se encontró la cita'}
+    return(jsonify(objeto))
+    
 @app.route('/Medicamentos', methods = ['GET'])
 def obtenerMedicinas():
     Datos = []
