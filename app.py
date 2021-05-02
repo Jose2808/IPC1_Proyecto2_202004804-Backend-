@@ -104,6 +104,7 @@ def registrarPaciente():
 def cargaPacientes():
     if request.method == 'POST':
         listaPacientes = request.json['pacientes']
+        del listaPacientes[0]
         for paciente in listaPacientes:
             nuevo_usuario = usuarioPaciente(len(usuarios), paciente['name'], paciente['surname'], paciente['birth'], paciente['sex'], paciente['user'], paciente['password'], paciente['phone'])
             usuarios.append(nuevo_usuario)
@@ -114,6 +115,7 @@ def cargaPacientes():
 def cargaDoctores():
     if request.method == 'POST':
         listaDoctores = request.json['doctores']
+        del listaDoctores[0]
         for doctor in listaDoctores:
             nuevo_doctor = usuarioMedico(len(usuarios), doctor['name'], doctor['surname'], doctor['birth'], doctor['sex'], doctor['user'], doctor['password'], doctor['phone'])
             nuevo_doctor.setSpeciality(doctor['speciality'])
@@ -125,6 +127,7 @@ def cargaDoctores():
 def cargaEnfermeras():
     if request.method == 'POST':
         listaEnfermeras = request.json['enfermeras']
+        del listaEnfermeras[0]
         for enfermera in listaEnfermeras:
             nueva_enfermera = usuarioEnfermera(len(usuarios), enfermera['name'], enfermera['surname'], enfermera['birth'], enfermera['sex'], enfermera['user'], enfermera['password'], enfermera['phone'])
             usuarios.append(nueva_enfermera)
@@ -135,6 +138,7 @@ def cargaEnfermeras():
 def cargaMedicamentos():
     if request.method == 'POST':
         listaMedicamentos = request.json['medicamentos']
+        del listaMedicamentos[0]
         for medicamento in listaMedicamentos:
             nuevo_medicamento = Medicamento(len(medicamentos), medicamento['name'], float(medicamento['price']), medicamento['description'], int(medicamento['amount']))
             medicamentos.append(nuevo_medicamento)
