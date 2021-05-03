@@ -7,6 +7,7 @@ from Usuario import usuarioMedico
 from Compra import compra
 from Cita import cita
 from Receta import receta
+from factura import factura 
 import json 
 
 usuarios = []
@@ -14,6 +15,7 @@ citas = []
 medicamentos = []
 medicamentosComprados = []
 recetas = []
+facturas = []
 
 app = Flask(__name__)
 CORS(app)
@@ -202,6 +204,22 @@ def guardarReceta():
             doctor_exist = False
     if doctor_exist == False:
         objeto = {'No se encontró su usuario en el sistema'}  
+    return(jsonify(objeto))
+
+@app.route('/generar-factura', methods = ['POST'])
+def generarFactura():
+    idFactura = len(facturas)+1
+    date = request.json['date']
+    paciente = request.json['patient']
+    doctor = request.json['doctor']
+    precioConsulta = request.json['consultPrice']
+    precioOperacion = request.json['operationPrice']
+    total = request.json['total']
+
+    nueva_factura = factura(idFactura, date, paciente, doctor, precioConsulta, precioOperacion, total)
+    facturas.append(nueva_factura)
+    objeto = {'Mensaje':'Factura creada exitosamente'}
+
     return(jsonify(objeto))
 
 @app.route('/Usuario/Crear-cita', methods = ['POST'])
