@@ -647,6 +647,28 @@ def getMedicamentos():
     usuarios.append(nuevo_medicamento)
     return jsonify({'Mensaje':'Se agregó el medicamento exitosamente'})
 
+@app.route('/Medicamentos/Modificar', methods = ['POST'])
+def modificarMedicamento():
+    idMedicamento = int(request.json['idMedicina'])
+    name = request.json['nombre']
+    descripcion = request.json['descripcion']
+    precio = float(request.json['precio'])
+    cantidad = int(request.json['cantidad'])
+    for medicamento in medicamentos:
+        if medicamento.getId() == idMedicamento:
+            medicamento.setNombre(name)
+            medicamento.setDescripcion(descripcion)
+            medicamento.setPrecio(precio)
+            medicamento.setCantidad(cantidad)
+            objeto = {'Mensaje': 'El medicamento se editó exitosamente'}
+            medic_exist = True
+            break
+        else:
+            medic_exist = False
+    if medic_exist == False:
+        objeto = {'Mensaje': 'No se ha encontrado el medicamento a editar'}
+    return(jsonify(objeto))
+    
 @app.route('/Eliminar/<string:username>', methods = ['DELETE'])
 def eliminarUsuario(username):
     if request.method == 'DELETE':
