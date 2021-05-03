@@ -196,7 +196,7 @@ def guardarReceta():
         if userDoctor == user.getUser_name():
             user.setCitasAsignadas(user.getCitas() + 1)
             doctor_exist = True
-            objeto = {'Mensaje':'Cita agregada con éxito', 'Doctor': user.getUser_name(), 'Citas': user.getCitas()}
+            objeto = {'Mensaje':'Receta agregada con éxito', 'Doctor': user.getUser_name(), 'Citas': user.getCitas()}
             break
         else:
             doctor_exist = False
