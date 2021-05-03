@@ -315,9 +315,6 @@ def aceptarCita():
             cita_exist = True
             cita.setState("Aceptada")
             cita.setDoctor(userDoctor)
-            for doctor in usuarios:
-                if doctor.getUser_name() == userDoctor:
-                    doctor.setCitasAsignadas(doctor.getCitas() + 1) 
             objeto = {'Mensaje': 'La cita ha sido aceptada', 'idCita': cita.getId(), 'Doctor': cita.getDoctor()}
             break
         else:
@@ -345,6 +342,9 @@ def completarCita():
         if cita.getId() == int(idCita):
             cita_exist = True
             cita.setState("Completada")
+            for doctor in usuarios:
+                if doctor.getUser_name() == userDoctor:
+                    doctor.setCitasAsignadas(doctor.getCitas() + 1) 
             objeto = {'Mensaje': 'La cita ha sido completada', 'idCita': cita.getId()}
             break
         else:
