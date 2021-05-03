@@ -196,7 +196,6 @@ def guardarReceta():
 
     for user in usuarios:
         if userDoctor == user.getUser_name():
-            user.setCitasAsignadas(user.getCitas() + 1)
             doctor_exist = True
             objeto = {'Mensaje':'Receta agregada con éxito', 'Doctor': user.getUser_name(), 'Citas': user.getCitas()}
             break
@@ -316,6 +315,9 @@ def aceptarCita():
             cita_exist = True
             cita.setState("Aceptada")
             cita.setDoctor(userDoctor)
+            for doctor in usuarios:
+                if doctor.getUser_name() == userDoctor:
+                    doctor.setCitasAsignadas(doctor.getCitas() + 1) 
             objeto = {'Mensaje': 'La cita ha sido aceptada', 'idCita': cita.getId(), 'Doctor': cita.getDoctor()}
             break
         else:
@@ -668,6 +670,28 @@ def eliminarMedicamento(medicamento):
             else:
                 objeto = {'Mensaje': 'El medicamento a eliminar no se encontró'}
     return(jsonify(objeto))
+
+@app.route('/top-doctores', methods = ['GET'])
+def topDoctores():
+    Datos = []
+    doctores = []
+    for usuario in usuarios:
+        if usuario.getType() == 3:
+            doctores.append(usuario)
+    topdoctores = sorted(doctores, key = lambda doctor: doctor.getCitas(), reverse = True)
+    for doctor in topdoctores:
+        objeto = {'Nombre': doctor.getName(), 'Citas': doctor.getCitas()}
+        Datos.append(objeto)
+    return(jsonify(Datos))
+
+@app.route('/top-5-medicamentos', methods = ['GET'])
+def topMedicamentos():
+    Datos = []
+    topmedicamentos = sorted(medicamentosComprados, key = lambda compra: compra.getCantidad(), reverse = True)
+    for medicamento in topmedicamentos:
+        objeto = {'id': medicamento.getId(), 'medicamento': medicamento.getNombre(), 'cantidad': medicamento.getCantidad()}
+        Datos.append(objeto)
+    return(jsonify(Datos))
 
 if __name__ =="__main__":
     app.run(host = "0.0.0.0", port = 3000, debug=True)
